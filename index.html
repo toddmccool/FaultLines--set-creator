@@ -27,6 +27,10 @@
         margin: 10px auto; /* Centering buttons and textarea */
         display: block;
       }
+      button[onclick="copySetlist()"] {
+        margin-top: -30px; /* Adjust as necessary to bring it up by approximately three lines */
+      }
+
       #listsContainer {
         display: flex;
         flex-wrap: wrap; /* Allows the container to wrap on smaller screens */
@@ -332,6 +336,8 @@
         masterSongs = [...originalSongs];
         displaySongs("masterList", masterSongs);
         document.getElementById("songInput").style.display = "none"; // Optionally hide the input textarea
+        document.querySelector("button[onclick='parseSongs()']").style.display =
+          "none"; // Hide the Load Songs button
       }
 
       function displaySongs(containerId, songs) {
