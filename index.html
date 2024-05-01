@@ -311,13 +311,16 @@
       you’re so vain 106 bpm capo 0
 </textarea
     ><br />
+
     <button onclick="parseSongs()">Load Songs</button>
+
     <div id="listsContainer">
       <div id="masterList" tabindex="0"></div>
       <div id="setList"></div>
     </div>
-    <button onclick="copySetlist()">Copy Setlist</button>
-
+    <div id="copySet">
+      <button onclick="copySetlist()">Copy Setlist</button>
+    </div>
     <script>
       let originalSongs = [];
       let masterSongs = [];
