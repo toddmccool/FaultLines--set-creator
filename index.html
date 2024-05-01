@@ -82,6 +82,21 @@
           justify-content: space-around;
         }
       }
+      @media (max-width: 480px) {
+        /* Specific styles for small devices like iPhones */
+        textarea,
+        button,
+        input {
+          font-size: 14px; /* Smaller font size for better readability */
+        }
+        #masterList,
+        #setList {
+          height: 200px; /* Further reduced height for very small screens */
+        }
+        button {
+          padding: 8px; /* Adjust padding to make buttons easier to tap */
+        }
+      }
     </style>
   </head>
   <body>
