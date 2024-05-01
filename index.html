@@ -342,6 +342,9 @@ FaultLines for setCreator
         updateSuggestions();
         displaySongs("setList", setList);
         displaySongs("masterList", masterSongs);
+        const masterListContainer = document.getElementById("masterList");
+        masterListContainer.scrollTop = 0; // Scroll to the top
+        masterListContainer.focus(); // Set focus back to the master list
       }
 
       function deselectSong(song) {
