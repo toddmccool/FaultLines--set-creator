@@ -6,13 +6,20 @@
     <title>Setlist Maker</title>
 
     <style>
+      html,
       body {
-        background-image: url("FaultLines  live.jpg"); /* Path to your image file */
+        height: 100%; /* Ensure the html and body are at least the height of the viewport */
+        margin: 0; /* Remove default margin */
+        padding: 0; /* Remove default padding */
+        background-image: url("fll.jpg"); /* Path to your image file */
         background-size: cover; /* Cover the entire page */
         background-position: center; /* Center the background image */
         background-repeat: no-repeat; /* Do not repeat the image */
-        display: flex; /* Use flex to fill the height */
-        flex-direction: column; /* Stack children vertically */
+      }
+      body {
+        display: flex; /* Use flex to manage children */
+        flex-direction: column; /* Organize children vertically */
+        min-height: 100vh; /* Minimum height as 100% of the viewport height */
       }
       textarea,
       button {
