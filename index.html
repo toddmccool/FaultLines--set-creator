@@ -1,5 +1,3 @@
-FaultLines for setCreator
-
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,6 +6,12 @@ FaultLines for setCreator
     <title>Setlist Maker</title>
 
     <style>
+      body {
+        background-image: url("FaultLines  live.jpg"); /* Path to your image file */
+        background-size: cover; /* Cover the entire page */
+        background-position: center; /* Center the background image */
+        background-repeat: no-repeat; /* Do not repeat the image */
+      }
       textarea,
       button {
         width: 90%;
@@ -27,12 +31,14 @@ FaultLines for setCreator
         margin: 10px 0; /* Only vertical margin */
         height: 400px; /* Adjust height as necessary */
         overflow-y: auto; /* Enables scrolling */
+        background-color: white; /* Sets background color for the lists */
       }
       .song {
         margin: 5px;
         padding: 5px;
         border: 1px solid grey;
         cursor: pointer;
+        background-color: white; /* Ensures song titles have a white background */
       }
       .song:hover {
         background-color: lightgrey;
@@ -40,7 +46,6 @@ FaultLines for setCreator
 
       /* Responsive adjustments */
       @media (min-width: 480px) {
-        /* Smaller devices (phones, 600px and down) */
         #masterList,
         #setList {
           width: 48%; /* Two columns on smaller screens */
@@ -52,7 +57,6 @@ FaultLines for setCreator
       }
 
       @media (min-width: 768px) {
-        /* Medium devices (tablets, 768px and up) */
         #masterList,
         #setList {
           width: 45%; /* Slightly larger than on smaller devices */
@@ -60,7 +64,6 @@ FaultLines for setCreator
       }
 
       @media (min-width: 1024px) {
-        /* Large devices (desktops, 1024px and up) */
         #listsContainer {
           justify-content: space-around;
         }
