@@ -11,6 +11,8 @@
         background-size: cover; /* Cover the entire page */
         background-position: center; /* Center the background image */
         background-repeat: no-repeat; /* Do not repeat the image */
+        display: flex; /* Use flex to fill the height */
+        flex-direction: column; /* Stack children vertically */
       }
       textarea,
       button {
@@ -22,6 +24,7 @@
         display: flex;
         flex-wrap: wrap; /* Allows the container to wrap on smaller screens */
         justify-content: space-between;
+        flex-grow: 1; /* Allows container to expand to fill available space */
       }
       #masterList,
       #setList {
