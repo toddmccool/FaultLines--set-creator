@@ -4,63 +4,63 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Faultlines Setlist Maker</title>
-
     <style>
       html,
       body {
-        height: 100%; /* Ensure the html and body are at least the height of the viewport */
-        margin: 0; /* Remove default margin */
-        padding: 0; /* Remove default padding */
-        background-image: url("fll.jpg"); /* Path to your image file */
-        background-size: cover; /* Cover the entire page */
-        background-position: right 20% center; /* Center the background image */
-        background-repeat: no-repeat; /* Do not repeat the image */
+        height: 100%; /* Full viewport height */
+        margin: 0; /* No margins */
+        padding: 0; /* No padding */
+        background-image: url("fll.jpg"); /* Background image */
+        background-size: cover; /* Cover entire viewport */
+        background-position: right 20% center; /* Positioning the background */
+        background-repeat: no-repeat; /* No repeat */
       }
       body {
-        display: flex; /* Use flex to manage children */
-        flex-direction: column; /* Organize children vertically */
-        min-height: 100vh; /* Minimum height as 100% of the viewport height */
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
       }
       textarea,
-      button {
+      button,
+      input {
         width: 90%;
-        margin: 10px auto; /* Centering buttons and textarea */
+        margin: 10px auto;
         display: block;
         background-color: black;
         color: white;
       }
-      button[onclick="copySetlist()"] {
-        margin-top: -200px; /* Adjust as necessary to bring it up by approximately three lines */
+      #searchInput {
+        margin-bottom: 0; /* Reduces space below the search input */
       }
-
       #listsContainer {
         display: flex;
-        flex-wrap: wrap; /* Allows the container to wrap on smaller screens */
+        flex-wrap: wrap;
         justify-content: space-between;
-        flex-grow: 1; /* Allows container to expand to fill available space */
+        flex-grow: 1;
       }
       #masterList,
       #setList {
-        width: 100%; /* Full width on smaller screens */
+        width: 100%;
         border: 1px solid black;
         padding: 10px;
-        margin: 10px 0; /* Only vertical margin */
-        height: 400px; /* Adjust height as necessary */
-        overflow-y: auto; /* Enables scrolling */
-        background-color: white; /* Sets background color for the lists */
+        margin: 10px 0;
+        height: 400px;
+        overflow-y: auto;
+        background-color: white;
       }
       .song {
         margin: 5px;
         padding: 5px;
         border: 1px solid grey;
         cursor: pointer;
-        background-color: white; /* Ensures song titles have a white background */
+        background-color: white;
       }
       .song:hover {
         background-color: lightgrey;
       }
-
-      /* Responsive adjustments */
+      button[onclick="copySetlist()"] {
+        margin-top: -200px; /* Adjust as necessary to bring it up by approximately three lines */
+      }
       @media (min-width: 480px) {
         #masterList,
         #setList {
@@ -71,14 +71,12 @@
           justify-content: space-around;
         }
       }
-
       @media (min-width: 768px) {
         #masterList,
         #setList {
           width: 45%; /* Slightly larger than on smaller devices */
         }
       }
-
       @media (min-width: 1024px) {
         #listsContainer {
           justify-content: space-around;
@@ -87,6 +85,12 @@
     </style>
   </head>
   <body>
+    <input
+      id="searchInput"
+      type="text"
+      placeholder="Search songs..."
+      oninput="filterSongs()"
+    />
     <textarea id="songInput" rows="10" cols="50">
 
       Ain’t Nobody/In The Air / 104 bpm capo 6
@@ -311,18 +315,14 @@
       the Climb 161 bpm capo 2
       you’re no good 105 bpm capo 0
       you’re so vain 106 bpm capo 0
-</textarea
+  </textarea
     ><br />
-
     <button onclick="parseSongs()">Load Songs</button>
-
     <div id="listsContainer">
       <div id="masterList" tabindex="0"></div>
       <div id="setList"></div>
     </div>
-    <div id="copySet">
-      <button onclick="copySetlist()">Copy Setlist</button>
-    </div>
+    <button onclick="copySetlist()">Copy Setlist</button>
     <script>
       let originalSongs = [];
       let masterSongs = [];
@@ -340,9 +340,9 @@
         });
         masterSongs = [...originalSongs];
         displaySongs("masterList", masterSongs);
-        document.getElementById("songInput").style.display = "none"; // Optionally hide the input textarea
+        document.getElementById("songInput").style.display = "none";
         document.querySelector("button[onclick='parseSongs()']").style.display =
-          "none"; // Hide the Load Songs button
+          "none";
       }
 
       function displaySongs(containerId, songs) {
@@ -359,11 +359,18 @@
               ? selectSong(song)
               : deselectSong(song);
           };
-          if (containerId === "setList") {
-            songDiv.ondblclick = () => moveSongUp(song);
-          }
           container.appendChild(songDiv);
         });
+      }
+
+      function filterSongs() {
+        const searchText = document
+          .getElementById("searchInput")
+          .value.toLowerCase();
+        const filteredSongs = originalSongs.filter((song) =>
+          song.name.toLowerCase().includes(searchText)
+        );
+        displaySongs("masterList", filteredSongs);
       }
 
       function selectSong(song) {
@@ -372,13 +379,10 @@
         updateSuggestions();
         displaySongs("setList", setList);
         displaySongs("masterList", masterSongs);
-        const masterListContainer = document.getElementById("masterList");
-        masterListContainer.scrollTop = 0; // Scroll to the top
-        masterListContainer.focus(); // Set focus back to the master list
       }
 
       function deselectSong(song) {
-        masterSongs.splice(song.originalIndex, 0, song); // Insert song back into its original position
+        masterSongs.splice(song.originalIndex, 0, song);
         setList = setList.filter((s) => s.id !== song.id);
         updateSuggestions();
         displaySongs("setList", setList);
