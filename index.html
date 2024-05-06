@@ -29,6 +29,12 @@
         background-color: black;
         color: white;
       }
+
+      /* CSS for invisible class */
+      .invisible {
+        color: transparent;
+      }
+
       #searchInput {
         margin-bottom: 0;
       }
@@ -345,13 +351,18 @@
       window.onload = parseSongs;
 
       // Function to display songs in a container
+      // Function to display songs in a container
       function displaySongs(containerId, songs) {
         const container = document.getElementById(containerId);
         container.innerHTML = "";
         songs.forEach((song) => {
           const songDiv = document.createElement("div");
           songDiv.className = "song";
-          songDiv.textContent = `${song.name} ${
+          // Wrap _S and _U in a span with a class for styling
+          const formattedName = song.name
+            .replace(/_S/g, '<span class="invisible">_S</span>')
+            .replace(/_U/g, '<span class="invisible">_U</span>');
+          songDiv.innerHTML = `${formattedName} ${
             song.bpm ? "- " + song.bpm + " bpm" : ""
           } ${song.capo !== null ? "- capo " + song.capo : ""}`;
           songDiv.onclick = () => {
