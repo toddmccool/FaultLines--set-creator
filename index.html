@@ -7,13 +7,13 @@
     <style>
       html,
       body {
-        height: 100%; /* Full viewport height */
-        margin: 0; /* No margins */
-        padding: 0; /* No padding */
-        background-image: url("fll.jpg"); /* Background image */
-        background-size: cover; /* Cover entire viewport */
-        background-position: right 20% center; /* Positioning the background */
-        background-repeat: no-repeat; /* No repeat */
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-image: url("fll.jpg");
+        background-size: cover;
+        background-position: right 20% center;
+        background-repeat: no-repeat;
       }
       body {
         display: flex;
@@ -30,7 +30,7 @@
         color: white;
       }
       #searchInput {
-        margin-bottom: 0; /* Reduces space below the search input */
+        margin-bottom: 0;
       }
       #listsContainer {
         display: flex;
@@ -59,13 +59,13 @@
         background-color: lightgrey;
       }
       button[onclick="copySetlist()"] {
-        margin-top: -200px; /* Adjust as necessary to bring it up by approximately three lines */
+        margin-top: -200px;
       }
       @media (min-width: 480px) {
         #masterList,
         #setList {
-          width: 48%; /* Two columns on smaller screens */
-          margin: 10px 1%; /* Small side margins for gutter space */
+          width: 48%;
+          margin: 10px 1%;
         }
         #listsContainer {
           justify-content: space-around;
@@ -74,7 +74,7 @@
       @media (min-width: 768px) {
         #masterList,
         #setList {
-          width: 45%; /* Slightly larger than on smaller devices */
+          width: 45%;
         }
       }
       @media (min-width: 1024px) {
@@ -83,18 +83,17 @@
         }
       }
       @media (max-width: 480px) {
-        /* Specific styles for small devices like iPhones */
         textarea,
         button,
         input {
-          font-size: 14px; /* Smaller font size for better readability */
+          font-size: 14px;
         }
         #masterList,
         #setList {
-          height: 200px; /* Further reduced height for very small screens */
+          height: 200px;
         }
         button {
-          padding: 8px; /* Adjust padding to make buttons easier to tap */
+          padding: 8px;
         }
       }
     </style>
@@ -106,34 +105,6 @@
       placeholder="Search songs..."
       oninput="filterSongs()"
     />
-    <textarea id="songInput" rows="10" cols="50">
-
-      Ain’t Nobody/In The Air / 104 bpm capo 6
-      Ain’t no mountain 129 bpm capo 0
-      All My Lovin ballad version 156 bpm capo 4
-      American Boy E 115 bpm capo 0
-      American Girl D 115 bpm capo 0
-      And I Love Her Beatles 113 bpm capo 0 
-      Animals Medley 148 bpm capo 0
-      Any way you want it capo 0 138 bpm
-      Are You Gonna Be My Girl 105 bpm capo 2
-      As It Was 174 bpm capo 0
-      At Last 87 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      We are family 116 bpm capo 0
-      
-  </textarea
-    ><br />
-    <button onclick="parseSongs()">Load Songs</button>
     <div id="listsContainer">
       <div id="masterList" tabindex="0"></div>
       <div id="setList"></div>
@@ -146,9 +117,217 @@
       let masterSongs = [];
       let setList = [];
 
+      // Define your song list here
+      const songList = [
+        "Ain’t Nobody/In The Air_U 104 bpm capo 6",
+        "Ain’t no mountain_U 129 bpm capo 0",
+        "All My Lovin_U 156 bpm capo 4",
+        "American Boy E_U 115 bpm capo 0",
+        "American Girl D_U 115 bpm capo 0",
+        "And I Love Her Beatles_S 113 bpm capo 0",
+        "Animals Medley_U 148 bpm capo 0",
+        "Any way you want it_U capo 0 138 bpm",
+        "Are You Gonna Be My Girl_U 105 bpm capo 2",
+        "As It Was_U 174 bpm capo 0",
+        "At Last _S 87 bpm capo 0",
+        "Baby its cold outside_S 86 bpm G capo 3",
+        "Bad Habits_U 126 bpm capo 2",
+        "Bad bad Leroy Brown_U 148 bpm capo 3",
+        "Believe /Do you believe in life after love Cher/ _U 133 bpm capo 0",
+        "Benny and the Jets_U 72 bpm capo 0",
+        "Best Day Of My Life_U 100 bpm capo 1",
+        "Billie Jean_U 120 bpm capo 0",
+        "Black Velvet Emi_S _U 85 bpm capo 0",
+        "Blackbird_S 94 bpm capo 0",
+        "Blackhorse and a cherry tree_U 105 bpm capo 0",
+        "Bless the broken road_S 68 bpm capo 0",
+        "Blister In The Sun_U 97 bpm capo 0",
+        "Brandy_U 125 bpm capo 0",
+        "Brass in Pocket the pretenders_S 107 bpm capo 0",
+        "Breakfast at tiffanys_U 113 bpm capo 0",
+        "Broken Hearted/Just The Way You Are/YMCA_U 120 bpm capo 1",
+        "Brown eyed girl i’m a believer_U 154 bpm capo 0",
+        "Burn/Cheap Thrills_U capo 2 174 bpm",
+        "Cake by the Ocean Emi_U 119 bpm capo 0",
+        "California Dreamin_S 113 bpm capo 2",
+        "California Girls_U capo 5 125 bpm",
+        "Can’t Hurry Love_U 196 bpm capo 3",
+        "Can’t stop the feelin’_U 113 bpm capo 0",
+        "Carolina_S 75 bpm capo 2",
+        "Carry On My Wayward Son Ami_U 125 bpm capo 0",
+        "Chasing Cars_S 109 bpm capo 2",
+        "Cheap Thrills_U 90 bpm capo 2",
+        "Close To You they long to be_S 88 bpm capo 0",
+        "Closer C _U capo 1 95 bpm",
+        "Come and Get your love D ii V I vi_U 107 bpm capo 0",
+        "Crazy Bb patsy klein_S 71 bpm capo 0",
+        "Crazy Gnarls Barkley _U _S capo 112 bpm capo 3",
+        "Crazy In Love Bb _U 99 bpm capo 0",
+        "Crazy in love _U 99 bpm G E capo 3",
+        "Crazy Love _S 77 bpm capo 0",
+        "Crazy little thing called love D_U 154 bpm capo 0",
+        "Cry me a river v / ch Emi B _S 74 bpm capo 2",
+        "Dance monkey _U 98 bpm capo 2",
+        "Dancin on my own Robyn_S 117 bpm capo 4",
+        "Dancing In the Dark Bruce S._U 149 bpm capo 4",
+        "Daniel _S 132 bpm capo 0",
+        "Deez Boots Were Made _U 166 bpm capo 0",
+        "Domino_U 127 bpm capo 2",
+        "Don’t Know Why_S 89 bpm capo 3",
+        "Don’t Stop Believing Journey_U 188 bpm capo 4",
+        "Don’t start now_U 124 bpm capo 0",
+        "Don’t original / _S capo 1",
+        "Dream On _S 74 bpm capo 1",
+        "Dreams /little red corvette/I’ll be around/Rebel rebel/Don’t you want me baby_S 120 bpm capo 0",
+        "Easy 133 bpm _S 67 bpm capo 0",
+        "Enough original / capo 3",
+        "Every littleThing she does is Magic_U 164 bpm capo 0",
+        "Everybody Talks _U 155 bpm capo 3",
+        "Ex’s and Oh’s Emi_U _S 130 bpm capo 0",
+        "Faith (with footloose/karma chameleon)_U 174 bpm capo 0",
+        "Faith (original tempo)_U 164 bpm capo 0",
+        "Fast Car _S 104 bpm capo 2",
+        "Fat Bottom girls __U 87 bpm capo 0 capo -2 174 bpm capo -2",
+        "February capo capo 3",
+        "Feel It Still/hit the road jack_U 79 bpm capo 4 158 bpm",
+        "Feel for you Bmi _U125 bpm capo 2",
+        "Fever Ami _S 135 bpm capo 0 68 bpm",
+        "Fire & Rain_S 76 bpm capo 3",
+        "Flowers _U _S 118 bpm capo 0",
+        "Fly me to the moon_S capo 3",
+        "Footloose _U 174 bpm capo 0",
+        "Funky Music /I Wish/Superstition/Stayin Alive/Get Down Tonight/ _U 106 bpm capo 0",
+        "Georgia on my mind G_S 105 bpm capo 0",
+        "Get Lucky _U 116 bpm capo 2",
+        "Go Your Own Way G…D C…Ch: /_U 136 bpm capo 0",
+        "Go put your records on A _S 95 bpm capo 0",
+        "God Only knows _S capo 2",
+        "Hallelujah _S 97 bpm capo 7",
+        "Happy Together Emi _S 108 bpm capo 2",
+        "Happy _U 160 bpm capo 1",
+        "Harvest Moon D_S 113 bpm capo 0",
+        "Here comes the sun D_S 128 bpm capo 7",
+        "Heroes Alesso_S 126 bpm capo 2",
+        "heyYa G mix_U 155 bpm capo 0",
+        "Hit the road/tainted love_U 144 bpm capo 4",
+        "Ho Hey C_S 80 bpm capo 0",
+        "Hotel California Eagles_S 74 bpm capo 2",
+        "How Deep Is Your Love beegees_S 105 bpm capo 3",
+        "I Wanna Dance With Somebody E _U 119 bpm capo 1",
+        "I cant help falling in love_S 100 bpm capo 4",
+        "If you only knew original G chords / capo 2",
+        "I’d rather go blind A tennessee whiskey _S 98 bpm capo 0",
+        "I’m a Believer brown eyd grl _U 155 bpm capo 0",
+        "Jailhouse rock _U 167 bpm capo 0",
+        "Jolene _U _S 111 bpm capo 4",
+        "Just A Girl D _ _U 108 bpm capo 0",
+        "Just The Way You Are Billy Joel _S 139 bpm capo 0",
+        "Karma chameleon _U 184 bpm capo 0",
+        "Karma chameleon (w/Footloose/faith) _U 174 bpm capo 0",
+        "Killing me softly Emi_S _92 bpm capo 0",
+        "Kiss Me _ _S 100 bpm capo 3",
+        "Kiss me ½ step down (D)_S 100 bpm capo 0",
+        "L.O.V.E key of D / _S 112 bpm capo 0",
+        "Landslide G _ _S 159 bpm capo 7 _ 79 bpm",
+        "Lets stay together F _S 102 bpm capo 0",
+        "Levitating _U 103 bpm capo 0",
+        "Listen to the music E -> F /_U 107 bpm capo 1",
+        "Locked Out Of Heaven Heaven _U 144 bpm capo 4",
+        "Long Run original / capo 3",
+        "Long Train Runnin _U 117 bpm capo 2",
+        "Long Way for now _U 111 bpm original / capo 3",
+        "Love Me Like You Do_S 95 bpm capo 0",
+        "Love Never Felt So Good_U 120 bpm capo 0",
+        "Love Supply original /_U 188 bpm capo 1",
+        "Love Yourself _S 107 bpm capo 4",
+        "Love is all we own original / _U 116 bpm capo 2",
+        "Lovefool _U _S 112 bpm capo 0",
+        "Lovesong Adele Version _U _S 117 bpm capo 3",
+        "Make You Feel My Love _S 77 bpm capo 3",
+        "Mary Janes Last Dance _S 85 bpm capo 0",
+        "Me & NYC original / _S 90 bpm capo 1",
+        "Melt With You C _U 154 bpm capo 0",
+        "Moon river C _S capo 0",
+        "Moondance _S 134 bpm capo 0",
+        "Moves Like Jagger Bmi _U 120 bpm capo 0",
+        "Mr. blue sky _U F capo 0",
+        "Natural Woman G chromatic walk down pre: ii iii _S 111 bpm capo 2",
+        "No Matter What _ w/you / won’t you / want you / w/you / want you / want you /_U 116 bpm capo 0",
+        "Oh what a night _U 104 bpm capo 6",
+        "Only The Good Die Young William Joel_U 152 bpm capo 0",
+        "PYT _U 127 bpm capo 2",
+        "Paper Planes original / _S capo 2",
+        "Peaceful Easy Feeling _S 143 bpm capo 0",
+        "Penny lane _S 114 bpm capo 2",
+        "Physical _U 124 bpm capo 0",
+        "Picture Perfect original /_S capo 6",
+        "Pour some sugar on me _U E capo 0",
+        "Price Tag/Where Is The Love/party in the USA / __S _U 88 bpm capo 1",
+        "Rainbow _S 65 bpm capo ",
+        "Runnin down a Dream_U 170 bpm capo 0",
+        "Starting at the finish line G_S 116 bpm capo 3",
+        "saw her standing there_U 162 bpm capo 0",
+        "sedated _U 163 bpm capo 0",
+        "Stay with me_S 84 bpm capo 0",
+        "Still The One Shania Twain _S 67 bpm capo 0",
+        "Stuck in the middle_U 95 bpm capo 0",
+        "Style t swift_S 95 bpm capo 2",
+        "Suit and tie_S _U 99 bpm capo 0",
+        "Summer Of sixtynine_U 136 bpm capo 0",
+        "Sunday Morning _S 88 bpm capo 0",
+        "Sweet Dreams havana _S 125 bpm capo 3",
+        "Sweet caroline_U 126 bpm capo 2",
+        "Tainted Love _U capo 144 bpm capo 2",
+        "Take It Easy Eagles_U 139 bpm capo 0",
+        "Take me home country Road_U 82 bpm capo 2",
+        "Teenage Dream G_ _S _U 120 bpm capo 0",
+        "Tennessee whiskey_S 98 bpm capo 0",
+        "The First Cut is the Deepest Cat Stevens/Sheryl_S 80 bpm capo 0",
+        "The Heart Wants What It Wants_S 86 bpm capo 3",
+        "The Way You Make Me Feel _S capo 2",
+        "The way you look tonight Eb_S 133 bpm capo 0",
+        "This Love _U 95 bpm capo 3",
+        "Time after time C_S 130 bpm capo 0",
+        "Time in a Bottle_S capo 5",
+        "Tiny Dancer_S 145bpm capo 0",
+        "Titanium/Young & Beautiful/Clarity_S 126 bpm capo 3",
+        "Treasure_U 116 bpm capo 3",
+        "Umbrella C _S capo 0",
+        "Unforgettable F_S capo 0",
+        "Up Around The Bend CCR_U 130 bpm capo 0",
+        "Valerie Eb_U 105 bpm capo 3",
+        "Wagon Wheel_U 148 bpm capo 2",
+        "Waiting for you C_S 82 bpm capo 0",
+        "Wasabi Dream_U 207 bpm capo 0",
+        "Watermelon sugar Dmi_S _U 95 bpm capo 0",
+        "We Are Young fst capo 92 bpm capo 1",
+        "We Found Love/Latch_S 128 bpm capo 5",
+        "We are family _U 116 bpm capo 0",
+        "What a wonderful world F original/ _S male key capo 0",
+        "What i like about you E _U 161 bpm capo 0",
+        "Whats Goin On_S _U 102 bpm capo 0",
+        "While My Guitar Gently Weeps_S 118 bpm capo 0",
+        "Whole Lotta Love_U 88 bpm capo 0",
+        "Wide Open Spaces_S 90 bpm capo 2",
+        "Wild World _S 76 bpm capo 0",
+        "Wish You Were Here C _S 61 bpm capo 6",
+        "Wonderwall _S 88 bpm capo 2",
+        "Wooden bridges G _U 210 bpm capo 2",
+        "Yellow brick road _S 121 bpm capo 1",
+        "Yesterday _S 97 bpm capo 0",
+        "You Gotta Be Angel Of Mine Human Nature_S 94 bpm capo 0",
+        "You may be right key of A_U 150 bpm capo 0",
+        "You’re Still The One _S Shania Twain capo 1",
+        "i feel the earth move_U _S 120 bpm capo 0",
+        "i wanna be your Lover C G Emi …. C Bmi Emi / _U 115 bpm capo 4",
+        "the Climb _S 161 bpm capo 2",
+        "you’re no good _S 105 bpm capo 0",
+        "you’re so vain _S 106 bpm capo 0",
+      ];
+
+      // Function to parse the song list
       function parseSongs() {
-        const input = document.getElementById("songInput").value.split("\n");
-        originalSongs = input.map((line, index) => {
+        originalSongs = songList.map((line, index) => {
           const name = line.replace(/(\d+ bpm|capo \d+)/g, "").trim();
           const bpmMatch = line.match(/(\d+) bpm/);
           const bpm = bpmMatch ? parseInt(bpmMatch[1]) : null;
@@ -158,11 +337,14 @@
         });
         masterSongs = [...originalSongs];
         displaySongs("masterList", masterSongs);
-        document.getElementById("songInput").style.display = "none";
-        document.querySelector("button[onclick='parseSongs()']").style.display =
-          "none";
+        document.getElementById("searchInput").style.display = "block";
+        document.getElementById("copysetList").style.display = "block";
       }
 
+      // Call parseSongs function on page load
+      window.onload = parseSongs;
+
+      // Function to display songs in a container
       function displaySongs(containerId, songs) {
         const container = document.getElementById(containerId);
         container.innerHTML = "";
@@ -181,6 +363,7 @@
         });
       }
 
+      // Function to filter songs based on search input
       function filterSongs() {
         const searchText = document
           .getElementById("searchInput")
@@ -191,6 +374,7 @@
         displaySongs("masterList", filteredSongs);
       }
 
+      // Function to select a song
       function selectSong(song) {
         setList.push(song);
         masterSongs = masterSongs.filter((s) => s.id !== song.id);
@@ -199,6 +383,7 @@
         displaySongs("masterList", masterSongs);
       }
 
+      // Function to deselect a song
       function deselectSong(song) {
         masterSongs.splice(song.originalIndex, 0, song);
         setList = setList.filter((s) => s.id !== song.id);
@@ -207,6 +392,7 @@
         displaySongs("masterList", masterSongs);
       }
 
+      // Function to move a song up
       function moveSongUp(song) {
         const index = setList.indexOf(song);
         if (index > 0) {
@@ -218,20 +404,33 @@
         }
       }
 
+      // Function to update song suggestions
       function updateSuggestions() {
         if (!setList.length) return;
         const lastSelectedSong = setList[setList.length - 1];
+        const demarcation = lastSelectedSong.name.endsWith("_U") ? "_U" : "_S";
 
         masterSongs.sort((a, b) => {
+          // Check if songs have the same demarcation as the last selected song
+          const demarcationMatchA = a.name.endsWith(demarcation) ? 0 : 1;
+          const demarcationMatchB = b.name.endsWith(demarcation) ? 0 : 1;
+
           const capoMatchA = a.capo === lastSelectedSong.capo ? 0 : 100;
           const capoMatchB = b.capo === lastSelectedSong.capo ? 0 : 100;
           const bpmDiffA = Math.abs(a.bpm - lastSelectedSong.bpm);
           const bpmDiffB = Math.abs(b.bpm - lastSelectedSong.bpm);
-          const exactMatchA = capoMatchA === 0 && bpmDiffA <= 3 ? 0 : 1;
-          const exactMatchB = capoMatchB === 0 && bpmDiffB <= 3 ? 0 : 1;
+          const exactMatchA =
+            demarcationMatchA === 0 && capoMatchA === 0 && bpmDiffA <= 3
+              ? 0
+              : 1;
+          const exactMatchB =
+            demarcationMatchB === 0 && capoMatchB === 0 && bpmDiffB <= 3
+              ? 0
+              : 1;
 
           return (
             exactMatchA - exactMatchB ||
+            demarcationMatchA - demarcationMatchB ||
             capoMatchA - capoMatchB ||
             bpmDiffA - bpmDiffB
           );
@@ -240,6 +439,7 @@
         displaySongs("masterList", masterSongs);
       }
 
+      // Function to copy the setlist to clipboard
       function copySetlist() {
         const setListSongs = setList
           .map(
