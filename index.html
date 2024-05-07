@@ -22,6 +22,9 @@
         min-height: 100vh;
       }
 
+      .hide {
+        visibility: hidden;
+      }
       input,
       button {
         width: 90%;
@@ -116,9 +119,13 @@
         { link: "", title: "All My Lovin_U 156 bpm capo 4" },
         {
           link: "https://toddmccool.github.io/chordprog124/twoFive.html#twoFiveList",
-          title: "American Boy E_U 115 bpm capo 0",
+          title: "American Boy E _U 118 bpm capo 0",
         },
-        { link: "", title: "American Girl D_U 115 bpm capo 0" },
+        {
+          link: "https://toddmccool.github.io/chordprog124/twoFive.html#twoFiveList",
+          title: "American Boy E _S 115 bpm capo 0",
+        },
+        { link: "", title: "American Girl D _U 115 bpm capo 0" },
         { link: "", title: "And I Love Her Beatles_S 113 bpm capo 0" },
         { link: "", title: "Animals Medley_U 148 bpm capo 0" },
         { link: "", title: "Any way you want it_U capo 0 138 bpm" },
@@ -176,8 +183,8 @@
         },
         { link: "", title: "Cry me a river v / ch Emi B _S 74 bpm capo 2" },
         { link: "", title: "Dance monkey _U 98 bpm capo 2" },
-        { link: "", title: "Dancin on my own Robyn_S 117 bpm capo 4" },
-        { link: "", title: "Dancing In the Dark Bruce S._U 149 bpm capo 4" },
+        { link: "", title: "Dancin on my own Robyn _S 117 bpm capo 4" },
+        { link: "", title: "Dancing In the Dark Bruce S. _U 149 bpm capo 4" },
         { link: "", title: "Daniel _S 132 bpm capo 0" },
         { link: "", title: "Deez Boots Were Made _U 166 bpm capo 0" },
         { link: "", title: "Domino_U 127 bpm capo 2" },
@@ -207,18 +214,18 @@
         { link: "", title: "Fast Car _S 104 bpm capo 2" },
         {
           link: "",
-          title: "Fat Bottom girls __U 87 bpm capo 0 capo -2 174 bpm capo -2",
+          title: "Fat Bottom girls _U 87 bpm capo 0 capo -2 174 bpm capo -2",
         },
         { link: "", title: "February capo capo 3" },
         {
           link: "",
-          title: "Feel It Still/hit the road jack_U 79 bpm capo 4 158 bpm",
+          title: "Feel It Still/hit the road jack _U 79 bpm capo 4 158 bpm",
         },
-        { link: "", title: "Feel for you Bmi _U125 bpm capo 2" },
+        { link: "", title: "Feel for you Bmi _U 125 bpm capo 2" },
         { link: "", title: "Fever Ami _S 135 bpm capo 0 68 bpm" },
-        { link: "", title: "Fire & Rain_S 76 bpm capo 3" },
+        { link: "", title: "Fire & Rain _S 76 bpm capo 3" },
         { link: "", title: "Flowers _U _S 118 bpm capo 0" },
-        { link: "", title: "Fly me to the moon_S capo 3" },
+        { link: "", title: "Fly me to the moon _S capo 3" },
         { link: "", title: "Footloose _U 174 bpm capo 0" },
         {
           link: "",
@@ -400,15 +407,52 @@
           const bpm = bpmMatch ? parseInt(bpmMatch[1]) : null;
           const capoMatch = song.title.match(/capo (\d+)/);
           const capo = capoMatch ? parseInt(capoMatch[1]) : null;
+          const type = song.title.includes("_U")
+            ? "_U"
+            : song.title.includes("_S")
+            ? "_S"
+            : null;
           return {
             id: index,
             link: song.link,
-            name: song.title.replace(/_U|_S|\d+ bpm|capo \d+/g, "").trim(),
+            name: song.title.replace(/(\d+ bpm|capo \d+)/g, "").trim(),
             bpm,
             capo,
+            type, // Store the type explicitly
           };
         });
         masterSongs = [...originalSongs];
+        displaySongs("masterList", masterSongs);
+      }
+
+      function updateSuggestions() {
+        if (!setList.length) return; // Exit if setList is empty
+        const lastSelectedSong = setList[setList.length - 1];
+
+        // Sort masterSongs based on type match, then bpm and capo proximity
+        masterSongs.sort((a, b) => {
+          const typeMatchA = a.type === lastSelectedSong.type ? 0 : 1; // 0 if matches, 1 otherwise
+          const typeMatchB = b.type === lastSelectedSong.type ? 0 : 1;
+
+          const bpmDiffA = Math.abs(a.bpm - lastSelectedSong.bpm);
+          const bpmDiffB = Math.abs(b.bpm - lastSelectedSong.bpm);
+          const capoDiffA = Math.abs(
+            (a.capo || 0) - (lastSelectedSong.capo || 0)
+          );
+          const capoDiffB = Math.abs(
+            (b.capo || 0) - (lastSelectedSong.capo || 0)
+          );
+
+          // First sort by type, then by bpm difference, then by capo difference
+          if (typeMatchA !== typeMatchB) {
+            return typeMatchA - typeMatchB;
+          } else if (bpmDiffA !== bpmDiffB) {
+            return bpmDiffA - bpmDiffB;
+          } else {
+            return capoDiffA - capoDiffB;
+          }
+        });
+
         displaySongs("masterList", masterSongs);
       }
 
@@ -421,15 +465,17 @@
           songDiv.style.padding = "10px"; // Adding padding for better click area
 
           const songNameSpan = document.createElement("span");
-          songNameSpan.textContent = `${song.name} - ${
-            song.bpm ? song.bpm + " bpm" : ""
-          } ${song.capo ? "capo " + song.capo : ""}`;
+          // Insert text content and wrap _U or _S in a span with a special class
+          songNameSpan.innerHTML =
+            song.name.replace(/(_U|_S)/g, '<span class="hide">$1</span>') +
+            ` - ${song.bpm ? song.bpm + " bpm" : ""} ${
+              song.capo ? "capo " + song.capo : ""
+            }`;
           songDiv.appendChild(songNameSpan);
 
-          // Create the link if it exists, for both master list and set list
           if (song.link) {
             const link = document.createElement("a");
-            link.href = "#"; // Prevent the default navigation
+            link.href = "#";
             link.style.marginLeft = "10px";
             link.textContent = "(Link)";
             link.onclick = (e) => {
@@ -440,7 +486,6 @@
             songDiv.appendChild(link);
           }
 
-          // Handle adding to setlist and removing from setlist
           songDiv.addEventListener("click", () => {
             if (containerId === "masterList") {
               selectSong(song);
@@ -452,6 +497,9 @@
           container.appendChild(songDiv);
         });
       }
+
+      // Add CSS to hide the tags
+      // This can be added in the <style> section of your HTML
 
       function openModal(url) {
         const modal = document.getElementById("linkModal");
@@ -473,6 +521,10 @@
         displaySongs("masterList", masterSongs);
         displaySongs("setList", setList);
         updateSuggestions();
+
+        // Scroll the master list back to the top
+        const masterListDiv = document.getElementById("masterList");
+        masterListDiv.scrollTop = 0; // Set the scroll position to the top
       }
 
       function deselectSong(song) {
@@ -484,13 +536,34 @@
       }
 
       function updateSuggestions() {
-        if (!setList.length) return;
+        if (!setList.length) return; // Exit if setList is empty
         const lastSelectedSong = setList[setList.length - 1];
+        const lastSongType = lastSelectedSong.name.includes("_U") ? "_U" : "_S"; // Determine the type of the last selected song
+
+        // Sort masterSongs based on type match, then bpm and capo proximity
         masterSongs.sort((a, b) => {
+          const typeMatchA = a.name.includes(lastSongType) ? 0 : 1; // 0 if matches, 1 otherwise
+          const typeMatchB = b.name.includes(lastSongType) ? 0 : 1;
+
           const bpmDiffA = Math.abs(a.bpm - lastSelectedSong.bpm);
           const bpmDiffB = Math.abs(b.bpm - lastSelectedSong.bpm);
-          return bpmDiffA - bpmDiffB;
+          const capoDiffA = Math.abs(
+            (a.capo || 0) - (lastSelectedSong.capo || 0)
+          );
+          const capoDiffB = Math.abs(
+            (b.capo || 0) - (lastSelectedSong.capo || 0)
+          );
+
+          // First sort by type, then by bpm difference, then by capo difference
+          if (typeMatchA !== typeMatchB) {
+            return typeMatchA - typeMatchB;
+          } else if (bpmDiffA !== bpmDiffB) {
+            return bpmDiffA - bpmDiffB;
+          } else {
+            return capoDiffA - capoDiffB;
+          }
         });
+
         displaySongs("masterList", masterSongs);
       }
 
