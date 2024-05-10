@@ -105,6 +105,25 @@
     </div>
 
     <script>
+      function copySetlist() {
+        const setListText = setList
+          .map(
+            (song) =>
+              `${song.name} - ${song.bpm ? song.bpm + " bpm" : ""} ${
+                song.capo ? "capo " + song.capo : ""
+              }`
+          )
+          .join("\n");
+        navigator.clipboard
+          .writeText(setListText)
+          .then(() => {
+            alert("Setlist copied to clipboard!");
+          })
+          .catch((err) => {
+            console.error("Failed to copy text: ", err);
+          });
+      }
+
       let originalSongs = [];
       let masterSongs = [];
       let setList = [];
@@ -249,14 +268,17 @@
         { link: "", title: "Dancing In the Dark Bruce S. _U 149 bpm capo 4" },
         { link: "", title: "Daniel _S 132 bpm capo 0" },
         { link: "", title: "Deez Boots Were Made _U 166 bpm capo 0" },
-        { link: "", title: "Domino_U 127 bpm capo 2" },
+        {
+          link: "https://toddmccool.github.io/chordprog124/fourTwoSixFive.html#topOffourTwoSixFiveList",
+          title: "Domino_U 127 bpm capo 2",
+        },
         { link: "", title: "Don’t Know Why_S 89 bpm capo 3" },
         { link: "", title: "Don’t Stop Believing Journey_U 188 bpm capo 4" },
         { link: "", title: "Don’t start now_U 124 bpm capo 0" },
         { link: "", title: "Don’t original / _S capo 1" },
         { link: "", title: "Dream On _S 74 bpm capo 1" },
         {
-          link: "",
+          link: "https://toddmccool.github.io/chordprog124/fourFive.html#topOffourFiveList",
           title:
             "Dreams /little red corvette/I’ll be around/Rebel rebel/Don’t you want me baby_S 120 bpm capo 0",
         },
