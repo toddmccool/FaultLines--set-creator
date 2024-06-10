@@ -33,6 +33,12 @@
         background-color: black;
         color: white;
       }
+      #searchInput {
+        height: 50px;
+        font-weight: bold;
+        color: white;
+        background-color: black; /* Ensure the background is black for contrast */
+      }
 
       #masterList,
       #setList {
@@ -92,6 +98,16 @@
       type="text"
       placeholder="Search songs..."
       oninput="filterSongs()"
+      style="
+        height: 50px;
+        font-weight: bold;
+        color: white;
+        background-color: rgb(35, 196, 225);
+        border: none;
+        outline: none;
+        width: 25%; /* Adjust the width to be about half */
+        margin: 10px 0 10px 15px; /* Adjust left margin to position it to the right */
+      "
     />
     <div id="masterList" tabindex="0"></div>
     <div id="setList"></div>
@@ -189,7 +205,10 @@
         { link: "", title: "Bless the broken road_S 68 bpm capo 0" },
         { link: "", title: "Blister In The Sun_U 97 bpm capo 0" },
         { link: "", title: "Brandy_U 125 bpm capo 0" },
-        { link: "", title: "Brass in Pocket the pretenders_S 107 bpm capo 0" },
+        {
+          link: "",
+          title: "Brass in Pocket <i>the pretenders</i>_S 107 bpm capo 0",
+        },
         {
           link: "https://toddmccool.github.io/chordprog124/oneFiveSixFour.html#topOfOneFiveSixFourList",
           title: "Breakfast at tiffanys_U 113 bpm capo 0",
@@ -287,6 +306,17 @@
         },
         { link: "", title: "Easy 133 bpm _S 67 bpm capo 0" },
         { link: "", title: "Enough original / capo 3" },
+
+        {
+          link: "https://toddmccool.github.io/chordprog124/fourSixFive.html#topOffourSixFiveList",
+          title: "Espresso <i>(chill)</i>_S 104 bpm capo 0",
+        },
+
+        {
+          link: "https://toddmccool.github.io/chordprog124/fourSixFive.html#topOffourSixFiveList",
+          title: "Espresso <i>(upbeat)</i>_U 104 bpm capo 0",
+        },
+
         {
           link: "https://toddmccool.github.io/chordprog124/fourFive.html#topOffourFiveList",
           title: "Every littleThing she does is Magic_U 164 bpm capo 0",
@@ -560,6 +590,10 @@
         { link: "", title: "you’re so vain _S 106 bpm capo 0" },
       ];
 
+      function normalizeString(str) {
+        return str.replace(/[\u2019'’]/g, "").toLowerCase();
+      }
+
       function parseSongs() {
         originalSongs = songList.map((song, index) => {
           const bpmMatch = song.title.match(/(\d+) bpm/);
@@ -727,11 +761,11 @@
       }
 
       function filterSongs() {
-        const searchText = document
-          .getElementById("searchInput")
-          .value.toLowerCase();
+        const searchText = normalizeString(
+          document.getElementById("searchInput").value
+        );
         const filteredSongs = originalSongs.filter((song) =>
-          song.name.toLowerCase().includes(searchText)
+          normalizeString(song.name).includes(searchText)
         );
         displaySongs("masterList", filteredSongs);
       }
